@@ -1,24 +1,44 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ClipItem from "../components/ClipItem";
+import localforage from 'localforage';
+
 const { io } = require("socket.io-client");
 
 const socket = io('http://localhost:4000');
 
-localStorage.setItem('roomId', '2234512');
-localStorage.setItem('name', 'Akshats Device');
+localforage.setItem('roomId', '2234512');
+localforage.setItem('name', 'Akshats Device');
 
 socket.on('connect', () => {
     console.log('connected to server');
-    socket.emit('join', localStorage.getItem('roomId'));
+    localforage.getItem('roomId').then((id) => {
+        socket.emit('join', id);
+    });
 });
 
 export default function Root(){
     const [input, setInput] = useState('');
     const [dataBase, setDataBase] = useState([]);
 
+    useEffect(() => {
+        localforage.getItem('data').then((value) =>{
+            if(value!=null)
+            setDataBase(value);
+        })
+    }, [])
+
+    useEffect(() => {
+        localforage.setItem('data', dataBase);
+    }, [dataBase])
+
     
     socket.on('getData', (data) => {
         setDataBase([data, ...dataBase]);
+        // localforage.setItem('data', dataBase);
+        // localforage.getItem('data').then((val) => {
+        //     if(val != null) console.log(val);
+        // });
+
     });
 
     function pasteVal(event){
@@ -31,8 +51,9 @@ export default function Root(){
 
     function sendVal(event){
         event.preventDefault();
-        const name = localStorage.getItem('name');
-        socket.emit('sendData', {name, input});
+        localforage.getItem('name').then((name) => {
+            socket.emit('sendData', {name, input});
+        });
         setInput('');
     }
 
@@ -53,11 +74,6 @@ export default function Root(){
             {dataBase.map((item) => {
                     return(<ClipItem content={item}/>);
             })}
-            {/* <ClipItem content={'test'}/>
-            <ClipItem content={'test2'}/> */}
-            {/* {dataBase.forEach((element) => {
-                <ClipItem content={element}/>
-            })} */}
         </>
     );
 }

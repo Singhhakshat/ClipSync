@@ -8,6 +8,7 @@
 /* rgb(35,31,32) */
 .navbar{
   position: fixed;
+  background-color: white;
   top: 0;
   width: 100%;
   padding: 10px;

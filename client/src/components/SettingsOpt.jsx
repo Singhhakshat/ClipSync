@@ -1,7 +1,7 @@
-export default function SettingsOpt(){
+export default function SettingsOpt({title, clickFunction}){
     return(
         <>
-        <button className="settingsOpt">Rename Device</button>
+            <button onClick={clickFunction} className="settingsOpt">{title}</button>
         </>
     );
 }
