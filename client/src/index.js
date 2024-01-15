@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Settings from './routes/Settings';
 import Root from './routes/Root';
+import Join from './routes/Join';
 
 
 const router = createBrowserRouter([
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
       {
         path: "settings",
         element: <Settings/>,
+      },
+      {
+        path: "join",
+        element: <Join/>
       },
     ],
   }

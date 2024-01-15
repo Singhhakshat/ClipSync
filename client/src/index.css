@@ -84,6 +84,11 @@
   padding: 10px;
 }
 
+.settingsBack{
+  padding: 10px;
+  font-size: 1.1rem;
+}
+
 @media (min-width: 768px){
   .app{
     width: 60vw;
@@ -94,3 +99,4 @@
     margin: auto !important;
   }
 }
+

@@ -1,8 +1,12 @@
 import { useState } from "react";
 import SettingsOpt from "../components/SettingsOpt";
 import localforage from 'localforage';
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 
 export default function Settings(){
+    const navigate = useNavigate();
     const [newName, setNewName] = useState('');
 
     const renameUser = (ev) => {
@@ -18,10 +22,20 @@ export default function Settings(){
         })
     }
 
+    const logout = () => {
+        localforage.removeItem('name');
+        localforage.removeItem('roomId').then(() => {
+            clearData();
+            alert('logged out!');
+            navigate('/Join');
+        })
+    }
+
     return(
         <div className="settings">
-            <h2>Rename</h2>
-            {<form>
+            <Link to={"/"} className="settingsBack">back</Link>
+            {/* <h4>Rename</h4> */}
+            <form>
                     <input 
                         type="text" 
                         placeholder="Enter New Name"
@@ -29,9 +43,10 @@ export default function Settings(){
                         onChange={(ev) => setNewName(ev.target.value)}
                     />
                     <button onClick={renameUser}>Rename</button>
-                </form>}
+                </form>
             <SettingsOpt clickFunction={clearData} title={'ClearData'}/>
-            <SettingsOpt title={'Logout'}/>
+            <SettingsOpt clickFunction={logout} title={'Logout'}/>
+            <h6>logging out will clear the clipboard.</h6>
         </div>
     );
 }
