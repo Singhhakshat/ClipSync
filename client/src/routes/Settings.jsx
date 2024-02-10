@@ -8,6 +8,10 @@ import { Link } from "react-router-dom";
 export default function Settings(){
     const navigate = useNavigate();
     const [newName, setNewName] = useState('');
+    let room;
+    localforage.getItem('roomId').then((roomId) => {
+        room = roomId;
+    });
 
     const renameUser = (ev) => {
         ev.preventDefault();
@@ -34,6 +38,7 @@ export default function Settings(){
     return(
         <div className="settings">
             <Link to={"/"} className="settingsBack">back</Link>
+            <h5>The room Id is {room}</h5>
             {/* <h4>Rename</h4> */}
             <form>
                     <input 
